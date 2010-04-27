@@ -20,7 +20,7 @@ no_index:
 provides:
   File::Find::Rule::LibMagic:
     file: lib/File/Find/Rule/LibMagic.pm
-    version: 0.01
+    version: 0.02
 requires:
   File::Find::Rule: 0.3
   File::LibMagic: 0.96
@@ -28,4 +28,4 @@ requires:
   Text::Glob: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.02

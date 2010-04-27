@@ -6,7 +6,7 @@ use strict;
 use base 'File::Find::Rule';
 use File::LibMagic 0.96;
 use Text::Glob qw(glob_to_regex);
-use Params::Util qw(_REGEX);
+use Params::Util qw(_ARRAY0 _REGEX);
 
 =head1 NAME
 
@@ -14,7 +14,7 @@ File::Find::Rule::LibMagic - rule to match on file types or mime types
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 =head1 SYNOPSIS
@@ -59,7 +59,8 @@ sub File::Find::Rule::magic
 {
     my $self = shift;
     local $Text::Glob::strict_wildcard_slash = 0; # allow '/opt/perl32/bin/perl script text executable'
-    my @patterns = map { defined( _REGEX( $_ ) ) ? $_ : glob_to_regex $_ } @_;
+    my @args = defined( _ARRAY0( $_[0] ) ) ? @{$_[0]} : @_;
+    my @patterns = map { defined( _REGEX( $_ ) ) ? $_ : glob_to_regex $_ } @args;
     my $lm = File::LibMagic->new();
     $self->exec( sub {
                      my $type = $lm->describe_filename($_);
@@ -71,7 +72,8 @@ sub File::Find::Rule::magic
 sub File::Find::Rule::mime
 {
     my $self = shift;
-    my @patterns = map { defined( _REGEX( $_ ) ) ? $_ : glob_to_regex $_ } @_;
+    my @args = defined( _ARRAY0( $_[0] ) ) ? @{$_[0]} : @_;
+    my @patterns = map { defined( _REGEX( $_ ) ) ? $_ : glob_to_regex $_ } @args;
     my $lm = File::LibMagic->new();
     $self->exec( sub {
                      my $type = $lm->checktype_filename($_);
